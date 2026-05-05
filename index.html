@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCP Video Remix - Sistema de Edição Automática</title>
+    <title>Video Remix - Edição Automática de Vídeos</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -31,21 +31,13 @@
         }
 
         header h1 {
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         header p {
-            font-size: 1.3em;
+            font-size: 1.1em;
             opacity: 0.9;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
         }
 
         .card {
@@ -53,177 +45,117 @@
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
+            margin-bottom: 20px;
         }
 
         .card h2 {
             color: #667eea;
             margin-bottom: 20px;
-            font-size: 1.8em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card h2 .icon {
             font-size: 1.5em;
         }
 
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
+        .upload-box {
+            border: 2px dashed #667eea;
             border-radius: 10px;
-            background: #000;
-            margin-bottom: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
         }
 
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .upload-box:hover {
+            background: #f0f0ff;
+            border-color: #764ba2;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
+        .upload-box.dragover {
+            background: #e8e4f3;
+            border-color: #764ba2;
         }
 
-        .stat {
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .video-list {
+            margin-top: 20px;
+        }
+
+        .video-item {
             background: #f5f5f5;
             padding: 15px;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .pipeline {
-            background: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .pipeline-step {
+            margin-bottom: 10px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
         }
 
-        .pipeline-step:last-child {
-            margin-bottom: 0;
-        }
-
-        .step-number {
-            background: #667eea;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .video-name {
             font-weight: bold;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-
-        .step-content {
+            color: #333;
             flex: 1;
         }
 
-        .step-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 3px;
-        }
-
-        .step-description {
+        .video-size {
+            color: #999;
             font-size: 0.9em;
-            color: #666;
+            margin-right: 15px;
         }
 
-        .arrow {
-            color: #667eea;
-            font-size: 1.2em;
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
             margin-right: 10px;
         }
 
-        .features {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            margin-bottom: 40px;
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
 
-        .features h2 {
-            color: #667eea;
-            margin-bottom: 30px;
-            font-size: 2em;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .feature-item {
-            padding: 20px;
-            border-radius: 10px;
-            background: #f5f5f5;
-            border-left: 4px solid #667eea;
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
         }
 
-        .feature-item h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 1.2em;
+        .btn-secondary:hover {
+            background: #e0e0e0;
         }
 
-        .feature-item p {
-            color: #666;
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-
-        .demo-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            margin-bottom: 40px;
-        }
-
-        .demo-section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .style-buttons {
+        .styles {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
@@ -231,7 +163,7 @@
         }
 
         .style-btn {
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: 2px solid #667eea;
             background: white;
             color: #667eea;
@@ -251,116 +183,103 @@
             color: white;
         }
 
-        .result-box {
-            background: #f5f5f5;
-            border-radius: 10px;
-            padding: 20px;
+        .progress-container {
+            display: none;
             margin-top: 20px;
-            border: 2px dashed #667eea;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .result-content {
-            text-align: center;
-        }
-
-        .result-content .check {
-            font-size: 3em;
-            color: #48bb78;
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
             margin-bottom: 10px;
         }
 
-        .result-content h3 {
-            color: #333;
-            margin-bottom: 15px;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
         }
 
-        .result-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
+        .status-message {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
-        .result-stat {
-            background: white;
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
             padding: 15px;
             border-radius: 8px;
+            margin-top: 10px;
         }
 
-        .result-stat-label {
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        .result-stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .download-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
+        .success {
+            background: #efe;
+            border: 1px solid #cfc;
+            color: #3c3;
+            padding: 15px;
             border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1em;
-            transition: transform 0.2s ease;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
-        .download-btn:hover {
-            transform: scale(1.05);
+        .hidden {
+            display: none;
         }
 
         .footer {
             text-align: center;
             color: white;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            margin-top: 60px;
+            margin-top: 40px;
+            padding: 20px 0;
         }
 
-        .footer p {
-            margin: 10px 0;
-        }
-
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-
-        .highlight {
-            color: #ce9178;
-        }
-
-        @media (max-width: 768px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
+        @media (max-width: 600px) {
             header h1 {
-                font-size: 2em;
+                font-size: 1.8em;
             }
 
-            .features-grid {
-                grid-template-columns: 1fr;
+            .card {
+                padding: 20px;
             }
 
-            .result-stats {
-                grid-template-columns: 1fr;
+            .upload-box {
+                padding: 30px 20px;
+            }
+
+            .styles {
+                flex-direction: column;
+            }
+
+            .style-btn {
+                width: 100%;
+            }
+
+            .video-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .video-size {
+                margin-right: 0;
+                margin-top: 10px;
+            }
+
+            .btn {
+                margin-right: 0;
+                margin-bottom: 10px;
+                width: 100%;
             }
         }
     </style>
@@ -368,254 +287,289 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎬 MCP Video Remix</h1>
-            <p>Sistema Automático de Edição de Vídeos</p>
-            <p style="font-size: 1em; margin-top: 10px;">Video Use + Hyperframes</p>
+            <h1>🎬 Video Remix Agent</h1>
+            <p>Edite seus vídeos automáticamente</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Remova silêncios + Adicione animações</p>
         </header>
 
-        <div class="main-grid">
-            <!-- Demonstração ANTES -->
-            <div class="card">
-                <h2><span class="icon">📹</span> Antes - Vídeo Original</h2>
-                <div style="background: #f5f5f5; padding: 40px; border-radius: 10px; text-align: center;">
-                    <div style="font-size: 3em; margin-bottom: 20px;">🎬</div>
-                    <p style="color: #666; margin-bottom: 15px;">Seu vídeo com silêncios e pausas</p>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">Duração</div>
-                        <div class="stat-value">2m 15s</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">Silêncios</div>
-                        <div class="stat-value">42</div>
-                    </div>
-                </div>
-                <p style="color: #666; font-size: 0.9em;">
-                    ❌ Contém múltiplos silêncios e pausas
-                </p>
-            </div>
-
-            <!-- Demonstração DEPOIS -->
-            <div class="card">
-                <h2><span class="icon">✨</span> Depois - Vídeo Editado</h2>
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 10px; text-align: center; color: white;">
-                    <div style="font-size: 3em; margin-bottom: 20px;">🎉</div>
-                    <p style="margin-bottom: 15px;">Seu vídeo pronto com animações!</p>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">Duração</div>
-                        <div class="stat-value">1m 38s</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">Redução</div>
-                        <div class="stat-value">27.5%</div>
-                    </div>
-                </div>
-                <p style="color: #48bb78; font-size: 0.9em;">
-                    ✅ Silêncios removidos + Animações sincronizadas
-                </p>
-            </div>
-        </div>
-
-        <!-- Pipeline -->
         <div class="card">
-            <h2><span class="icon">⚙️</span> Como Funciona</h2>
-            <div class="pipeline">
-                <div class="pipeline-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <div class="step-title">📝 Transcrição Inteligente</div>
-                        <div class="step-description">ElevenLabs Scribe extrai áudio com precisão de palavra-por-palavra</div>
-                    </div>
-                    <span class="arrow">→</span>
-                </div>
-
-                <div class="pipeline-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <div class="step-title">✂️ Remoção de Silêncios</div>
-                        <div class="step-description">Remove pausas > 0.5s mantendo fluidez natural</div>
-                    </div>
-                    <span class="arrow">→</span>
-                </div>
-
-                <div class="pipeline-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <div class="step-title">🎨 Análise de Palavras-chave</div>
-                        <div class="step-description">Extrai termos principais para animações sincronizadas</div>
-                    </div>
-                    <span class="arrow">→</span>
-                </div>
-
-                <div class="pipeline-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <div class="step-title">🎬 Renderização Final</div>
-                        <div class="step-description">Hyperframes gera HTML/GSAP e renderiza MP4 final</div>
-                    </div>
-                </div>
+            <h2>📹 Fazer Upload de Vídeo</h2>
+            <div class="upload-box" id="uploadBox" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📤</div>
+                <div class="upload-text">Clique para selecionar ou arraste um vídeo</div>
+                <div class="upload-hint">MP4, MOV, MKV (máx 500MB)</div>
             </div>
+            <input type="file" id="fileInput" accept="video/*">
+
+            <div class="video-list" id="videoList" style="display: none;">
+                <h3 style="margin-bottom: 15px; color: #333;">Vídeos Disponíveis</h3>
+                <div id="videoItems"></div>
+            </div>
+
+            <div class="error hidden" id="uploadError"></div>
+            <div class="success hidden" id="uploadSuccess"></div>
         </div>
 
-        <!-- Features -->
-        <div class="features">
-            <h2>✨ Recursos Principais</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <h3>🎯 Automático</h3>
-                    <p>Uma única chamada orquestra todo o pipeline Video Use + Hyperframes</p>
-                </div>
-                <div class="feature-item">
-                    <h3>📊 Metadados</h3>
-                    <p>Retorna duração reduzida, transcrição e Edit Decision List (EDL)</p>
-                </div>
-                <div class="feature-item">
-                    <h3>🎨 3 Estilos</h3>
-                    <p>Minimal, Vibrant, Cinematic - escolha o visual ideal</p>
-                </div>
-                <div class="feature-item">
-                    <h3>⚡ Rápido</h3>
-                    <p>Processamento paralelo e caching inteligente</p>
-                </div>
-                <div class="feature-item">
-                    <h3>🔄 Reversível</h3>
-                    <p>Todos os arquivos intermediários mantidos para ajustes</p>
-                </div>
-                <div class="feature-item">
-                    <h3>🤖 MCP Ready</h3>
-                    <p>Integrado com Claude Code para automação total</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Demo Interativa -->
-        <div class="demo-section">
-            <h2>🚀 Teste Agora</h2>
-            <p style="color: #666; margin-bottom: 20px;">
-                Escolha um estilo de animação para ver como o vídeo final seria renderizado:
-            </p>
-
-            <div class="style-buttons">
-                <button class="style-btn active" onclick="selectStyle('minimal')">
-                    ⚪ Minimal
-                </button>
-                <button class="style-btn" onclick="selectStyle('vibrant')">
-                    🌈 Vibrant
-                </button>
-                <button class="style-btn" onclick="selectStyle('cinematic')">
-                    🎬 Cinematic
-                </button>
+        <div class="card hidden" id="processSection">
+            <h2>🎨 Escolher Estilo de Animação</h2>
+            <div class="styles">
+                <button class="style-btn active" onclick="selectStyle('minimal')">⚪ Minimal</button>
+                <button class="style-btn" onclick="selectStyle('vibrant')">🌈 Vibrant</button>
+                <button class="style-btn" onclick="selectStyle('cinematic')">🎬 Cinematic</button>
             </div>
 
-            <div class="result-box" id="resultBox">
-                <div class="result-content">
-                    <div class="check">✓</div>
-                    <h3>Minimal Style Selecionado</h3>
-                    <p>Animações simples com fade/scale</p>
-                    <p style="font-size: 0.9em; color: #999; margin-top: 10px;">Fundo branco, texto escuro, efeitos suaves</p>
-                </div>
-            </div>
-
-            <div class="result-stats">
-                <div class="result-stat">
-                    <div class="result-stat-label">Duração Final</div>
-                    <div class="result-stat-value">1m 38s</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-label">FPS</div>
-                    <div class="result-stat-value">24</div>
-                </div>
-                <div class="result-stat">
-                    <div class="result-stat-label">Resolução</div>
-                    <div class="result-stat-value">1920x1080</div>
-                </div>
-            </div>
-
-            <button class="download-btn" onclick="downloadVideo()">
-                ⬇️ Baixar Vídeo Editado
+            <button class="btn btn-primary" onclick="processVideo()" id="processBtn">
+                ▶️ Processar Vídeo
             </button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="status-message" id="statusMessage">Processando...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0%</div>
+                </div>
+            </div>
+
+            <div class="error hidden" id="processError"></div>
+            <div class="success hidden" id="processSuccess">
+                <strong>✅ Vídeo processado com sucesso!</strong>
+                <br><br>
+                <button class="btn btn-primary" onclick="downloadVideo()">⬇️ Baixar Vídeo Editado</button>
+            </div>
         </div>
 
-        <!-- Código -->
         <div class="card">
-            <h2><span class="icon">💻</span> Como Usar (MCP Tools)</h2>
-
-            <h3 style="color: #333; margin: 20px 0 10px 0;">Tool: editar_video</h3>
-            <div class="code-block">
-{
-  "video_path": "/caminho/para/video.mp4",
-  "estilo_animacao": "<span class="highlight">"vibrant"</span>",  <span style="color: #6a9955;">// minimal | vibrant | cinematic</span>
-  "remover_silencio": <span class="highlight">true</span>
-}
-            </div>
-
-            <h3 style="color: #333; margin: 20px 0 10px 0;">Output</h3>
-            <div class="code-block">
-{
-  "status": "<span class="highlight">"sucesso"</span>",
-  "video_final": "<span class="highlight">"/workspace/video/video_final.mp4"</span>",
-  "duracao_original": <span class="highlight">135.5</span>,
-  "duracao_final": <span class="highlight">98.3</span>,
-  "reducao": "<span class="highlight">"27.5%"</span>",
-  "fps": <span class="highlight">24</span>
-}
-            </div>
+            <h2>ℹ️ Como Funciona</h2>
+            <ol style="color: #666; line-height: 1.8; padding-left: 20px;">
+                <li><strong>Upload:</strong> Selecione seu vídeo (até 500MB)</li>
+                <li><strong>Escolher estilo:</strong> Minimal, Vibrant ou Cinematic</li>
+                <li><strong>Processar:</strong> Video Use remove silêncios</li>
+                <li><strong>Animar:</strong> Hyperframes adiciona efeitos</li>
+                <li><strong>Baixar:</strong> Seu vídeo editado está pronto!</li>
+            </ol>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
-            <p><strong>🎬 MCP Video Remix Agent</strong></p>
-            <p>Integração automática de Video Use + Hyperframes</p>
-            <p style="margin-top: 20px; font-size: 0.9em;">
-                📚 <a href="#" style="color: white;">Documentação</a> •
-                🐙 <a href="#" style="color: white;">GitHub</a> •
-                💬 <a href="#" style="color: white;">Support</a>
-            </p>
+            <p>🚀 <strong>Video Remix Agent</strong></p>
+            <p>Sistema automático de edição de vídeos com IA</p>
         </div>
     </div>
 
     <script>
-        function selectStyle(style) {
-            const buttons = document.querySelectorAll('.style-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        let selectedStyle = 'minimal';
+        let uploadedFile = null;
+        let currentJobId = null;
 
-            const styles = {
-                minimal: {
-                    title: 'Minimal Style',
-                    desc: 'Animações simples com fade/scale',
-                    details: 'Fundo branco, texto escuro, efeitos suaves'
-                },
-                vibrant: {
-                    title: 'Vibrant Style',
-                    desc: 'Animações dinâmicas com slide/rotate',
-                    details: 'Fundo escuro, texto claro, efeitos coloridos'
-                },
-                cinematic: {
-                    title: 'Cinematic Style',
-                    desc: 'Animações profissionais com blur',
-                    details: 'Fundo muito escuro, accent cyan, efeitos cinematográficos'
+        // Upload via clique ou drag-and-drop
+        const uploadBox = document.getElementById('uploadBox');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.classList.add('dragover');
+        });
+
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.classList.remove('dragover');
+        });
+
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        async function handleFiles(files) {
+            if (files.length === 0) return;
+
+            const file = files[0];
+            if (!file.type.startsWith('video/')) {
+                showError('uploadError', '❌ Selecione um arquivo de vídeo válido!');
+                return;
+            }
+
+            uploadedFile = file;
+            const formData = new FormData();
+            formData.append('video', file);
+
+            try {
+                clearMessages('uploadError', 'uploadSuccess');
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'sucesso') {
+                    showSuccess('uploadSuccess', `✅ ${file.name} enviado com sucesso!`);
+                    document.getElementById('processSection').classList.remove('hidden');
+                    loadVideoList();
+                } else {
+                    showError('uploadError', `❌ Erro: ${data.mensagem}`);
                 }
-            };
+            } catch (error) {
+                showError('uploadError', `❌ Erro ao enviar: ${error.message}`);
+            }
+        }
 
-            const selected = styles[style];
-            const resultBox = document.getElementById('resultBox');
-            resultBox.innerHTML = `
-                <div class="result-content">
-                    <div class="check">✓</div>
-                    <h3>${selected.title} Selecionado</h3>
-                    <p>${selected.desc}</p>
-                    <p style="font-size: 0.9em; color: #999; margin-top: 10px;">${selected.details}</p>
-                </div>
-            `;
+        function selectStyle(style) {
+            selectedStyle = style;
+            document.querySelectorAll('.style-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        async function processVideo() {
+            if (!uploadedFile) {
+                showError('processError', '❌ Selecione um vídeo primeiro!');
+                return;
+            }
+
+            const processBtn = document.getElementById('processBtn');
+            processBtn.disabled = true;
+
+            try {
+                clearMessages('processError', 'processSuccess');
+                document.getElementById('progressContainer').style.display = 'block';
+
+                const response = await fetch('/api/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        filename: uploadedFile.name,
+                        estilo: selectedStyle
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'processando') {
+                    currentJobId = data.job_id;
+                    // Começar a monitorar o status
+                    await monitorProgress();
+                } else {
+                    showError('processError', `❌ Erro: ${data.mensagem}`);
+                    document.getElementById('progressContainer').style.display = 'none';
+                    processBtn.disabled = false;
+                }
+            } catch (error) {
+                showError('processError', `❌ Erro ao processar: ${error.message}`);
+                document.getElementById('progressContainer').style.display = 'none';
+                processBtn.disabled = false;
+            }
+        }
+
+        async function monitorProgress() {
+            const processBtn = document.getElementById('processBtn');
+            const statusMessage = document.getElementById('statusMessage');
+            const progressContainer = document.getElementById('progressContainer');
+
+            const pollInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/status/${currentJobId}`);
+                    const data = await response.json();
+
+                    if (data.status === 'sucesso') {
+                        clearInterval(pollInterval);
+                        updateProgress(100);
+                        statusMessage.textContent = '✅ Processamento concluído!';
+
+                        setTimeout(() => {
+                            progressContainer.style.display = 'none';
+                            showSuccess('processSuccess',
+                                `✅ <strong>Sucesso!</strong> Seu vídeo foi editado em estilo <strong>${selectedStyle}</strong>!<br><br>Redução de duração: <strong>${data.reducao}</strong><br><br><button class="btn btn-primary" onclick="downloadVideo()">⬇️ Baixar Vídeo Editado</button>`);
+                            processBtn.disabled = false;
+                        }, 1000);
+                    } else if (data.status === 'erro') {
+                        clearInterval(pollInterval);
+                        progressContainer.style.display = 'none';
+                        showError('processError', `❌ Erro: ${data.mensagem}`);
+                        processBtn.disabled = false;
+                    } else if (data.status === 'processando') {
+                        updateProgress(data.progress || 0);
+                        statusMessage.textContent = data.etapa || 'Processando...';
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar status:', error);
+                    // Continuar tentando
+                }
+            }, 2000); // Verificar a cada 2 segundos
+        }
+
+        function updateProgress(value) {
+            document.getElementById('progressFill').style.width = value + '%';
+            document.getElementById('progressFill').textContent = Math.round(value) + '%';
+        }
+
+        async function loadVideoList() {
+            try {
+                const response = await fetch('/api/videos');
+                const data = await response.json();
+
+                if (data.videos.length > 0) {
+                    document.getElementById('videoList').style.display = 'block';
+                    const videoItems = document.getElementById('videoItems');
+                    videoItems.innerHTML = '';
+
+                    data.videos.forEach(video => {
+                        const size = (video.size / 1024 / 1024).toFixed(2);
+                        const item = document.createElement('div');
+                        item.className = 'video-item';
+                        item.innerHTML = `
+                            <span class="video-name">🎬 ${video.name}</span>
+                            <span class="video-size">${size} MB</span>
+                        `;
+                        videoItems.appendChild(item);
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao carregar vídeos:', error);
+            }
         }
 
         function downloadVideo() {
-            alert('🎬 Em um ambiente real com o MCP Server rodando:\n\n1. O sistema processaria seu vídeo\n2. Removeria silêncios automaticamente\n3. Adicionaria animações sincronizadas\n4. Geraria o arquivo MP4 final\n\nVocê poderia então baixar o vídeo processado!');
+            if (currentJobId) {
+                window.location.href = `/api/download/${currentJobId}`;
+            } else {
+                showError('processError', '❌ Nenhum vídeo processado para baixar');
+            }
         }
+
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.classList.remove('hidden');
+        }
+
+        function showSuccess(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = message;
+            element.classList.remove('hidden');
+        }
+
+        function clearMessages(...elementIds) {
+            elementIds.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+        }
+
+        // Verificar saúde do servidor ao carregar
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                console.log('✅ Servidor conectado:', data.message);
+            } catch (error) {
+                console.warn('⚠️ Servidor pode estar offline');
+            }
+        });
     </script>
 </body>
 </html>
