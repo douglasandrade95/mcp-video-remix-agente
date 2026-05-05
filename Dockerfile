@@ -31,4 +31,4 @@ RUN mkdir -p workspace
 EXPOSE 8000
 
 # Comando para rodar o servidor
-CMD ["python3", "-m", "http.server", "8000"]
+CMD ["python3", "app.py"]
